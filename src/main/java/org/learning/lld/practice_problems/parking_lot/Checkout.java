@@ -14,8 +14,16 @@ public class Checkout {
         return parkingRate * elapsedTimeInMinutes;
     }
 
-    public boolean makePayment(Ticket ticket, PaymentStrategy paymentStrategy) throws Exception {
+    public void makePayment(Ticket ticket, PaymentStrategy paymentStrategy) throws Exception {
         var cost = getParkingCost(ticket);
-        return paymentStrategy.pay(cost);
+        var result = paymentStrategy.pay(cost);
+
+        if (result) {
+            System.out.println("payment successful !!");
+            System.out.println("clear to exit...");
+        } else {
+            System.out.println("Payment failed...");
+            System.out.println("Retry payment....");
+        }
     }
 }
