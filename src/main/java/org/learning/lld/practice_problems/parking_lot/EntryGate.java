@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 public class EntryGate {
     private int gateId;
+    private ParkingLot parkingLot;
     private ParkingSpotAllocationStrategy strategy;
 
     public Ticket getParkingTicket(EntryGate gate, Vechile vechile) throws Exception {
@@ -20,7 +21,7 @@ public class EntryGate {
         System.out.println(msg);
 
         System.out.println("looking for parking spot...");
-        ParkingSpot spot = strategy.getAvailableParkingSpot(vechile.getVechileType());
+        ParkingSpot spot = strategy.getAvailableParkingSpot(parkingLot, vechile.getVechileType());
 
         if (Objects.isNull(spot)) throw new Exception("No Spots Available");
 
