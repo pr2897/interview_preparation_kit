@@ -19,6 +19,7 @@ public class Problems {
 
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/logic-building/move-zeros-to-end
     static class MoveZerosToEnd {
 
         // TC: O(N)
@@ -56,6 +57,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/fundamentals/left-rotate-array
     static class RotateArray {
         // TC: O(K+ (N-K) + N) = O(2*N) = O(N)
         // SC: O(1)
@@ -75,6 +77,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/logic-building/remove-duplicates-from-sorted-array
     static class RemoveDuplicatesFromArray {
         // TC: O(N)
         // SC: O(1)
@@ -92,6 +95,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/logic-building/union-of-two-sorted-arrays
     static class UnionArray {
         // TC: O((M+N)log(M+N)) ≈ (k*log(K))
         // SC: O(M+N)
@@ -146,6 +150,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/logic-building/intersection-of-two-sorted-arrays
     static class IntersectionArray {
         // TC: O(M+N)
         // SC: O(M+N)
@@ -172,6 +177,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/faqs-medium/leaders-in-an-array
     static class LeadersInArray {
         // TC: O(N)
         // SC: O(N)
@@ -190,6 +196,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/faqs-medium/print-the-matrix-in-spiral-manner
     static class SpiralMatrix {
         // TC: O(M*N)
         // SC: O(M*N)
@@ -226,6 +233,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/faqs-medium/rearrange-array-elements-by-sign
     static class RearrangeArrayElements {
 
         // TC: O(N)
@@ -247,6 +255,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/faqs-medium/pascal's-triangle
     static class PascalTriangle {
 
         // pattern 1: for given row R and col C, find the element at position (r,c) in pascal triangle.
@@ -302,6 +311,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/faqs-medium/rotate-matrix-by-90-degrees
     static class RotateMatrixBy90Degree {
         // TC: O(M*N)
         // SC: O(M*N)
@@ -345,6 +355,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/arrays/faqs-medium/two-sum
     static class TwoSum {
 
         // TC: O(N*N)
@@ -415,6 +426,10 @@ public class Problems {
 
             return res;
         }
+    }
+
+    // https://takeuforward.org/plus/dsa/arrays/faqs-medium/3-sum
+    static class ThreeSum {
     }
 }
 
