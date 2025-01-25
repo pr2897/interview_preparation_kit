@@ -6,13 +6,13 @@ import java.util.*;
 
 public class Problems {
     public static void main(String[] args) {
-        int[][] matrix = new int[][]{{1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,16}};
-        for (int[] row: matrix) System.out.println(Arrays.toString(row));
+        var triangle = PascalTriangle.pascalTriangle(5);
+        triangle.forEach(System.out::println);
 
-        System.out.println("-".repeat(10));
+        System.out.println(PascalTriangle.pascalTriangleForNthRow(5));
 
-        List<Integer> res = SpiralMatrix.optimal(matrix);
-        System.out.println(res);
+        System.out.println(PascalTriangle.elementInPascalTriangle(5,3));
+
     }
 
     static class MoveZerosToEnd {
@@ -219,6 +219,82 @@ public class Problems {
             }
 
             return res;
+        }
+    }
+
+    static class RearrangeArrayElements {
+
+        // TC: O(N)
+        // SC: O(N)
+        public static int[] optimal(int[] nums) {
+            int[] res = new int[nums.length];
+
+            int posIdx = 0, negIdx = 1;
+            for (int c: nums) {
+                if (c < 0) {
+                    res[negIdx] = c;
+                    negIdx += 2;
+                } else {
+                    res[posIdx] = c;
+                    posIdx += 2;
+                }
+            }
+            return res;
+        }
+    }
+
+    static class PascalTriangle {
+
+        // pattern 1: for given row R and col C, find the element at position (r,c) in pascal triangle.
+        // TC: O(C)
+        // SC: O(1)
+        public static int elementInPascalTriangle(int r, int c) {
+            return nCr(r-1, c-1);
+        }
+
+
+        // pattern 2: print nth row of pascal triangle.
+        // TC: O(N*R)
+        // SC: O(1)
+        public static List<Integer> pascalTriangleForNthRow(int N) {
+            List<Integer> row = new ArrayList<>();
+
+            for (int c = 1; c<= N; c++) {
+                row.add(nCr(N-1, c-1));
+            }
+
+            return row;
+        }
+
+        // pattern 3: generate Pascal triangle upto N rows
+        // TC: O(N*N)
+        // SC: O(N*N)
+        public static List<List<Integer>> pascalTriangle(int n) {
+            List<List<Integer>> triangle = new ArrayList<>();
+            for (int i=0;i<n;i++) {
+                List<Integer> row = new ArrayList<>();
+                for (int j=0;j<=i;j++){
+                    row.add(nCr(i,j));
+                }
+                triangle.add(row);
+            }
+
+            return triangle;
+        }
+
+
+        private static int nCr(int n, int r) {
+            if (r > n-r) {
+                r = n-r;
+            }
+
+            long res = 1;
+            for (int i=0;i<r;i++) {
+                res *= n-i;
+                res /= i+1;
+            }
+
+            return (int) res;
         }
     }
 }
