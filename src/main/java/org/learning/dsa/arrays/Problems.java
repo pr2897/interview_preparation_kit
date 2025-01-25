@@ -6,12 +6,10 @@ import java.util.*;
 
 public class Problems {
     public static void main(String[] args) {
-        var triangle = PascalTriangle.pascalTriangle(5);
-        triangle.forEach(System.out::println);
-
-        System.out.println(PascalTriangle.pascalTriangleForNthRow(5));
-
-        System.out.println(PascalTriangle.elementInPascalTriangle(5,3));
+       int[][] matrix = new int[][] {{1,2,3}, {4,5,6}, {7,8,9}};
+        Arrays.stream(matrix).forEach(e -> System.out.println(Arrays.toString(e)));
+        RotateMatrixBy90Degree.optimal(matrix);
+        Arrays.stream(matrix).forEach(e -> System.out.println(Arrays.toString(e)));
 
     }
 
@@ -295,6 +293,49 @@ public class Problems {
             }
 
             return (int) res;
+        }
+    }
+
+    static class RotateMatrixBy90Degree {
+        // TC: O(M*N)
+        // SC: O(M*N)
+        public static void brute(int[][] matrix) {
+            int m = matrix.length, n = matrix[0].length;
+            int[][] tmp = new int[m][n];
+
+            for (int i=0;i<m;i++) {
+                for (int j=0;j<n;j++) {
+                    tmp[j][n-i-1] = matrix[i][j]; // note: iterate indexes on pen and paper for pattern.
+                }
+            }
+
+            for (int i=0;i<m;i++) {
+                for (int j=0;j<n;j++) {
+                    matrix[i][j] = tmp[i][j];
+                }
+            }
+        }
+
+
+        // TC: O(M*N)
+        // SC: O(1)
+        public static void optimal(int[][] matrix) {
+            int m = matrix.length, n = matrix[0].length;
+            // transpose matrix
+            for (int i=0;i<m;i++) {
+                for (int j=0;j<n;j++) {
+                    if (i<j) swap(matrix, i, j);
+                }
+            }
+
+            // reverse each row.
+            for (int[] row: matrix) ArrayUtils.reverse(row, 0, row.length-1);
+        }
+
+        private static void swap(int[][] matrix, int row, int col) {
+            int tmp = matrix[row][col];
+            matrix[row][col] = matrix[col][row];
+            matrix[col][row] = tmp;
         }
     }
 }
