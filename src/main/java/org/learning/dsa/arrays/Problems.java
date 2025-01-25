@@ -6,9 +6,13 @@ import java.util.*;
 
 public class Problems {
     public static void main(String[] args) {
-        int[] num1 = new int[] {1, 2, 3, 4, 5};
-        int[] num2 = new int[] {1, 2, 7};
-        System.out.println(Arrays.toString(IntersectionArray.optimal(num1, num2)));
+        int[][] matrix = new int[][]{{1,2,3,4}, {5,6,7,8}, {9,10,11,12}, {13,14,15,16}};
+        for (int[] row: matrix) System.out.println(Arrays.toString(row));
+
+        System.out.println("-".repeat(10));
+
+        List<Integer> res = SpiralMatrix.optimal(matrix);
+        System.out.println(res);
     }
 
     static class MoveZerosToEnd {
@@ -179,6 +183,42 @@ public class Problems {
                 }
             }
             return leaders;
+        }
+    }
+
+    static class SpiralMatrix {
+        // TC: O(M*N)
+        // SC: O(M*N)
+        public static List<Integer> optimal(int[][] matrix) {
+            List<Integer> res = new ArrayList<>();
+
+            int m = matrix.length, n = matrix[0].length;
+            int left = 0, right = n-1, top = 0, bottom = m - 1;
+
+            while (left <= right && top <= bottom) {
+                // left to right
+                for (int i=left;i<=right;i++) res.add(matrix[top][i]);
+                top++;
+
+                // right top to bottom
+                for (int i=top;i<=bottom;i++) res.add(matrix[i][right]);
+                right--;
+
+
+                // right to left
+                if (top <= bottom) { // NOTE: IMPORTANT CONDITION
+                    for (int i = right; i >= left; i--) res.add(matrix[bottom][i]);
+                    bottom--;
+                }
+
+                // bottom to up
+                if (left <= right) { // NOTE: IMPORTANT CONDITION
+                    for (int i = bottom; i >= top; i--) res.add(matrix[i][left]);
+                    left++;
+                }
+            }
+
+            return res;
         }
     }
 }
