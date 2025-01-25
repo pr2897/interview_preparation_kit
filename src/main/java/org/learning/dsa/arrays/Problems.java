@@ -2,14 +2,20 @@ package org.learning.dsa.arrays;
 
 import com.sun.source.tree.BreakTree;
 
+import javax.swing.plaf.PanelUI;
 import java.util.*;
 
 public class Problems {
     public static void main(String[] args) {
-       int[][] matrix = new int[][] {{1,2,3}, {4,5,6}, {7,8,9}};
-        Arrays.stream(matrix).forEach(e -> System.out.println(Arrays.toString(e)));
-        RotateMatrixBy90Degree.optimal(matrix);
-        Arrays.stream(matrix).forEach(e -> System.out.println(Arrays.toString(e)));
+
+       int[] nums = new int[] {1,6,2,10,3};
+       int[] target = new int[]{7,5,12,11,61};
+       int[][] response = new int[][]{{0,1}, {2,4}, {2,3}, {0,3}, {-1,-1}};
+
+        System.out.printf("%10s | %10s | %10s\n", "target", "expected", "actual");
+       for (int i =0; i< target.length; i++) {
+           System.out.printf("%10s | %10s | %10s\n", target[i], Arrays.toString(response[i]), Arrays.toString(TwoSum.optimal(nums, target[i])));
+       }
 
     }
 
@@ -336,6 +342,78 @@ public class Problems {
             int tmp = matrix[row][col];
             matrix[row][col] = matrix[col][row];
             matrix[col][row] = tmp;
+        }
+    }
+
+    static class TwoSum {
+
+        // TC: O(N*N)
+        // SC: O(1)
+        public static int[] brute(int[] arr, int target) {
+            int[] result = new int[]{-1,-1};
+
+            for (int i=0;i<arr.length;i++) {
+                for (int j=0;j<arr.length;j++) {
+                    if (i != j && arr[i]+arr[j] == target) {
+                        result[0] = i;
+                        result[1] = j;
+                        return result;
+                    }
+                }
+            }
+            return result;
+        }
+
+        // TC: O(N* logN)
+        // SC: O(N)
+        public static int[] better(int[] arr, int target) {
+            int[] result = new int[]{-1,-1};
+            Map<Integer, Integer> mp = new HashMap<>();
+
+            for (int i =0; i<arr.length;i++) {
+                int required = target - arr[i];
+                if (mp.containsKey(required)) {
+                    result[0] = i;
+                    result[1] = mp.get(required);
+                    break;
+                }
+
+                mp.put(arr[i], i);
+            }
+
+            Arrays.sort(result);
+            return result;
+        }
+
+        // TC: O(N*logN)
+        // SC: O(1)
+        public static int[] optimal(int[] arr, int target) {
+            int n = arr.length;
+            int[][] newArr = new int[n][2];
+            for (int i=0;i<n;i++) {
+                newArr[i][0] = arr[i];
+                newArr[i][1] = i;
+            }
+
+            Arrays.sort(newArr, (first, second) -> first[0]-second[0]);
+
+            int[] res = new int[]{-1,-1};
+            int low = 0, high = newArr.length-1;
+            while (low < high) {
+                int sum = newArr[low][0] + newArr[high][0];
+                if (sum == target) {
+                    res[0] = newArr[low][1];
+                    res[1] = newArr[high][1];
+                    Arrays.sort(res);
+                    break;
+                } else if (sum < target) {
+                    low++;
+                } else {
+                    high--;
+                }
+            }
+
+            return res;
         }
     }
 }
