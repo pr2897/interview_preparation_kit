@@ -1,0 +1,27 @@
+1. Rotate Array:
+    K left rotate: (optimal)
+        reverse(0,K)
+        reverse(K+1, N)
+        reverse(0,N)
+
+    K right rotate: (optimal)
+        reverse(N-K, N)
+        reverse(0, N-K)
+        reverse(0, N)
+
+2. Move zeros to end: two pointer
+    brute:
+        copy all non zero to temp array
+        copy back from tmp to original, and fill rest with zero.
+
+    better: two pointer
+        i=0,j=0;
+        for i=0:N
+            if(arr[i] != 0) arr[j++] = arr[i];
+
+        while j < N:
+            arr[j++] = 0
+
+3.
+
+
