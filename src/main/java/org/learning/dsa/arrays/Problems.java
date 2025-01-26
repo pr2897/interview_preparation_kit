@@ -441,13 +441,13 @@ public class Problems {
             int n = nums.length;
             Set<List<Integer>> triplets = new HashSet<>();
             Map<Integer, Integer> mp = new HashMap<>();
-            for (int i=0;i<nums.length;i++) {
+            for (int i = 0; i < nums.length; i++) {
                 mp.put(nums[i], i);
             }
 
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
-                    if(i==j) continue;
+                    if (i == j) continue;
                     int required = -(nums[i] + nums[j]);
                     int targetKey = mp.getOrDefault(required, -1);
                     if (targetKey != -1 && targetKey != i && targetKey != j) {
@@ -507,6 +507,102 @@ public class Problems {
 
             return ans;
 
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/arrays/faqs-medium/4-sum
+    static class FourSum {
+
+        // TC: O(N^4)
+        // SC: O(1)
+        public static List<List<Integer>> brute(int[] nums, int target) {
+            int n = nums.length;
+            Set<List<Integer>> quartets = new HashSet<>();
+
+            for (int i = 0; i < n; i++) {
+                for (int j = i + 1; j < n; j++) {
+                    for (int k = j + 1; k < n; k++) {
+                        for (int l = k + 1; l < n; l++) {
+                            if (nums[i] + nums[j] + nums[k] + nums[l] == target) {
+                                List<Integer> tmp = new ArrayList<>();
+                                tmp.addAll(List.of(nums[i], nums[j], nums[k], nums[l]));
+                                tmp.sort((a, b) -> a - b);
+                                quartets.add(tmp);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return new ArrayList<>(quartets);
+        }
+
+        // TC: o(n^3) * log(m) // m is unique quartets
+        // SC: O(n) + O(m) // m is unique quartets
+        public static List<List<Integer>> better(int[] nums, int target) {
+            int n = nums.length;
+            Set<List<Integer>> quartets = new HashSet<>();
+            Map<Integer, Integer> mp = new HashMap<>();
+
+            for (int i = 0; i < nums.length; i++) {
+                mp.put(nums[i], i);
+            }
+
+            for (int i = 0; i < n; i++) {
+                for (int j = i + 1; j < n; j++) {
+                    for (int k = j + 1; k < n; k++) {
+                        int required = target - (nums[i] + nums[j] + nums[k]);
+                        int targetIdx = mp.getOrDefault(required, -1);
+                        if (targetIdx != -1 && targetIdx != i && targetIdx != j && targetIdx != k) {
+                            List<Integer> tmp = new ArrayList<>();
+                            tmp.addAll(List.of(nums[i], nums[j], nums[k], nums[targetIdx]));
+                            tmp.sort((a, b) -> a - b);
+                            quartets.add(tmp);
+                        }
+                    }
+                }
+            }
+
+            return new ArrayList<>(quartets);
+        }
+
+
+        // TC: O(N^3)
+        // SC: O(1)
+        public static List<List<Integer>> optimal(int[] nums, int target) {
+            List<List<Integer>> ans = new ArrayList<>();
+            int n = nums.length;
+            Arrays.sort(nums);
+
+            for (int i = 0; i < n; i++) {
+                if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+                for (int j = i + 1; j < n; j++) {
+                    if (j != i + 1 && nums[j] == nums[j - 1]) continue;
+
+                    int k = j + 1;
+                    int l = n - 1;
+
+                    while (k < l) {
+                        int sum = nums[i] + nums[j] + nums[k] + nums[l];
+                        if (sum > target) {
+                            l--;
+                        } else if (sum < target) {
+                            k++;
+                        } else {
+                            List<Integer> tmp = new ArrayList<>(List.of(nums[i], nums[j], nums[k], nums[l]));
+                            ans.add(tmp);
+
+                            k++;
+                            l--;
+                            while (k < l && nums[k] == nums[k - 1]) k++;
+                            while (k < l && nums[l] == nums[l + 1]) l--;
+                        }
+                    }
+                }
+            }
+
+            return ans;
         }
     }
 }
