@@ -1,22 +1,9 @@
 package org.learning.dsa.arrays;
 
-import com.sun.source.tree.BreakTree;
-
-import javax.swing.plaf.PanelUI;
 import java.util.*;
 
 public class Problems {
     public static void main(String[] args) {
-
-       int[] nums = new int[] {1,6,2,10,3};
-       int[] target = new int[]{7,5,12,11,61};
-       int[][] response = new int[][]{{0,1}, {2,4}, {2,3}, {0,3}, {-1,-1}};
-
-        System.out.printf("%10s | %10s | %10s\n", "target", "expected", "actual");
-       for (int i =0; i< target.length; i++) {
-           System.out.printf("%10s | %10s | %10s\n", target[i], Arrays.toString(response[i]), Arrays.toString(TwoSum.optimal(nums, target[i])));
-       }
-
     }
 
     // https://takeuforward.org/plus/dsa/arrays/logic-building/move-zeros-to-end
@@ -26,24 +13,24 @@ public class Problems {
         // SC: O(N)
         public static void brute(int[] nums) {
             int[] tmp = new int[nums.length];
-            int k=0;
+            int k = 0;
             // copy non zero element to tmp array
-            for (int c: nums) {
+            for (int c : nums) {
                 if (c != 0) tmp[k++] = c;
             }
 
             // copy all elements from tmp array to original array.
-            for (int i=0;i<k;i++) nums[i] = tmp[i];
+            if (k >= 0) System.arraycopy(tmp, 0, nums, 0, k);
 
             // fill the rest with zero.
-            for (int i=k;i<nums.length;i++) nums[i] = 0;
+            for (int i = k; i < nums.length; i++) nums[i] = 0;
         }
 
         // TC: O(N)
         // SC: O(1)
         public static void optimal(int[] nums) {
             int k = 0;
-            for (int i=0;i<nums.length;i++) {
+            for (int i = 0; i < nums.length; i++) {
                 if (nums[i] != 0) {
                     nums[k] = nums[i];
                     k++;
@@ -62,18 +49,18 @@ public class Problems {
         // TC: O(K+ (N-K) + N) = O(2*N) = O(N)
         // SC: O(1)
         private static void leftRotate(int[] arr, int k) {
-            ArrayUtils.reverse(arr, 0, k-1);
-            ArrayUtils.reverse(arr, k, arr.length-1);
-            ArrayUtils.reverse(arr, 0, arr.length-1);
+            ArrayUtils.reverse(arr, 0, k - 1);
+            ArrayUtils.reverse(arr, k, arr.length - 1);
+            ArrayUtils.reverse(arr, 0, arr.length - 1);
         }
 
         // TC: O(K+ (N-K) + N) = O(2*N) = O(N)
         // SC: O(1)
         private static void rightRotate(int[] arr, int k) {
             int lastK = arr.length - k;
-            ArrayUtils.reverse(arr, lastK, arr.length-1);
-            ArrayUtils.reverse(arr, 0, lastK-1);
-            ArrayUtils.reverse(arr, 0, arr.length-1);
+            ArrayUtils.reverse(arr, lastK, arr.length - 1);
+            ArrayUtils.reverse(arr, 0, lastK - 1);
+            ArrayUtils.reverse(arr, 0, arr.length - 1);
         }
     }
 
@@ -85,13 +72,13 @@ public class Problems {
             int n = nums.length;
             int ptr = -1;
 
-            for (int i=0;i<n;i++) {
+            for (int i = 0; i < n; i++) {
                 if (ptr == -1 || nums[i] != nums[ptr]) {
                     nums[++ptr] = nums[i];
                 }
             }
 
-            return ptr+1;
+            return ptr + 1;
         }
     }
 
@@ -101,17 +88,17 @@ public class Problems {
         // SC: O(M+N)
         public static int[] brute(int[] nums1, int[] nums2) {
             Set<Integer> st = new TreeSet<>();
-            for (int c: nums1) st.add(c);
-            for (int c: nums2) st.add(c);
+            for (int c : nums1) st.add(c);
+            for (int c : nums2) st.add(c);
 
             return st.stream().mapToInt(Integer::intValue).toArray();
         }
 
         public static int[] optimal(int[] nums1, int[] nums2) {
             List<Integer> unionList = new ArrayList<>();
-            int idx1=0, n1 = nums1.length, idx2=0, n2 = nums2.length;
+            int idx1 = 0, n1 = nums1.length, idx2 = 0, n2 = nums2.length;
 
-            while (idx1<n1 && idx2 < n2) {
+            while (idx1 < n1 && idx2 < n2) {
                 if (nums1[idx1] <= nums2[idx2]) {
                     if (unionList.isEmpty() || unionList.getLast() != nums1[idx1]) {
                         unionList.add(nums1[idx1]);
@@ -144,8 +131,8 @@ public class Problems {
 
             // convert to correct format.
             int[] result = new int[unionList.size()];
-            int k=0;
-            for (int c: unionList) result[k++] = c;
+            int k = 0;
+            for (int c : unionList) result[k++] = c;
             return result;
         }
     }
@@ -156,7 +143,7 @@ public class Problems {
         // SC: O(M+N)
         public static int[] optimal(int[] nums1, int[] num2) {
             List<Integer> intersectionsList = new ArrayList<>();
-            int i = 0, n = nums1.length, j =0, m = num2.length;
+            int i = 0, n = nums1.length, j = 0, m = num2.length;
 
             while (i < n && j < m) {
                 if (nums1[i] < num2[j]) {
@@ -172,7 +159,7 @@ public class Problems {
 
             int[] res = new int[intersectionsList.size()];
             int k = 0;
-            for (int c: intersectionsList) res[k++] = c;
+            for (int c : intersectionsList) res[k++] = c;
             return res;
         }
     }
@@ -183,10 +170,10 @@ public class Problems {
         // SC: O(N)
         public static ArrayList<Integer> optimal(int[] nums) {
             ArrayList<Integer> leaders = new ArrayList<>();
-            int lastLeader = nums[nums.length-1];
+            int lastLeader = nums[nums.length - 1];
             leaders.add(0, lastLeader);
 
-            for (int i=nums.length-2;i>=0;i--) {
+            for (int i = nums.length - 2; i >= 0; i--) {
                 if (nums[i] > lastLeader) {
                     lastLeader = nums[i];
                     leaders.add(0, lastLeader);
@@ -204,15 +191,15 @@ public class Problems {
             List<Integer> res = new ArrayList<>();
 
             int m = matrix.length, n = matrix[0].length;
-            int left = 0, right = n-1, top = 0, bottom = m - 1;
+            int left = 0, right = n - 1, top = 0, bottom = m - 1;
 
             while (left <= right && top <= bottom) {
                 // left to right
-                for (int i=left;i<=right;i++) res.add(matrix[top][i]);
+                for (int i = left; i <= right; i++) res.add(matrix[top][i]);
                 top++;
 
                 // right top to bottom
-                for (int i=top;i<=bottom;i++) res.add(matrix[i][right]);
+                for (int i = top; i <= bottom; i++) res.add(matrix[i][right]);
                 right--;
 
 
@@ -242,7 +229,7 @@ public class Problems {
             int[] res = new int[nums.length];
 
             int posIdx = 0, negIdx = 1;
-            for (int c: nums) {
+            for (int c : nums) {
                 if (c < 0) {
                     res[negIdx] = c;
                     negIdx += 2;
@@ -262,7 +249,7 @@ public class Problems {
         // TC: O(C)
         // SC: O(1)
         public static int elementInPascalTriangle(int r, int c) {
-            return nCr(r-1, c-1);
+            return nCr(r - 1, c - 1);
         }
 
 
@@ -272,8 +259,8 @@ public class Problems {
         public static List<Integer> pascalTriangleForNthRow(int N) {
             List<Integer> row = new ArrayList<>();
 
-            for (int c = 1; c<= N; c++) {
-                row.add(nCr(N-1, c-1));
+            for (int c = 1; c <= N; c++) {
+                row.add(nCr(N - 1, c - 1));
             }
 
             return row;
@@ -284,10 +271,10 @@ public class Problems {
         // SC: O(N*N)
         public static List<List<Integer>> pascalTriangle(int n) {
             List<List<Integer>> triangle = new ArrayList<>();
-            for (int i=0;i<n;i++) {
+            for (int i = 0; i < n; i++) {
                 List<Integer> row = new ArrayList<>();
-                for (int j=0;j<=i;j++){
-                    row.add(nCr(i,j));
+                for (int j = 0; j <= i; j++) {
+                    row.add(nCr(i, j));
                 }
                 triangle.add(row);
             }
@@ -297,14 +284,14 @@ public class Problems {
 
 
         private static int nCr(int n, int r) {
-            if (r > n-r) {
-                r = n-r;
+            if (r > n - r) {
+                r = n - r;
             }
 
             long res = 1;
-            for (int i=0;i<r;i++) {
-                res *= n-i;
-                res /= i+1;
+            for (int i = 0; i < r; i++) {
+                res *= n - i;
+                res /= i + 1;
             }
 
             return (int) res;
@@ -319,16 +306,14 @@ public class Problems {
             int m = matrix.length, n = matrix[0].length;
             int[][] tmp = new int[m][n];
 
-            for (int i=0;i<m;i++) {
-                for (int j=0;j<n;j++) {
-                    tmp[j][n-i-1] = matrix[i][j]; // note: iterate indexes on pen and paper for pattern.
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    tmp[j][n - i - 1] = matrix[i][j]; // note: iterate indexes on pen and paper for pattern.
                 }
             }
 
-            for (int i=0;i<m;i++) {
-                for (int j=0;j<n;j++) {
-                    matrix[i][j] = tmp[i][j];
-                }
+            for (int i = 0; i < m; i++) {
+                System.arraycopy(tmp[i], 0, matrix[i], 0, n);
             }
         }
 
@@ -338,14 +323,14 @@ public class Problems {
         public static void optimal(int[][] matrix) {
             int m = matrix.length, n = matrix[0].length;
             // transpose matrix
-            for (int i=0;i<m;i++) {
-                for (int j=0;j<n;j++) {
-                    if (i<j) swap(matrix, i, j);
+            for (int i = 0; i < m; i++) {
+                for (int j = 0; j < n; j++) {
+                    if (i < j) swap(matrix, i, j);
                 }
             }
 
             // reverse each row.
-            for (int[] row: matrix) ArrayUtils.reverse(row, 0, row.length-1);
+            for (int[] row : matrix) ArrayUtils.reverse(row, 0, row.length - 1);
         }
 
         private static void swap(int[][] matrix, int row, int col) {
@@ -361,11 +346,11 @@ public class Problems {
         // TC: O(N*N)
         // SC: O(1)
         public static int[] brute(int[] arr, int target) {
-            int[] result = new int[]{-1,-1};
+            int[] result = new int[]{-1, -1};
 
-            for (int i=0;i<arr.length;i++) {
-                for (int j=0;j<arr.length;j++) {
-                    if (i != j && arr[i]+arr[j] == target) {
+            for (int i = 0; i < arr.length; i++) {
+                for (int j = 0; j < arr.length; j++) {
+                    if (i != j && arr[i] + arr[j] == target) {
                         result[0] = i;
                         result[1] = j;
                         return result;
@@ -378,10 +363,10 @@ public class Problems {
         // TC: O(N* logN)
         // SC: O(N)
         public static int[] better(int[] arr, int target) {
-            int[] result = new int[]{-1,-1};
+            int[] result = new int[]{-1, -1};
             Map<Integer, Integer> mp = new HashMap<>();
 
-            for (int i =0; i<arr.length;i++) {
+            for (int i = 0; i < arr.length; i++) {
                 int required = target - arr[i];
                 if (mp.containsKey(required)) {
                     result[0] = i;
@@ -401,15 +386,15 @@ public class Problems {
         public static int[] optimal(int[] arr, int target) {
             int n = arr.length;
             int[][] newArr = new int[n][2];
-            for (int i=0;i<n;i++) {
+            for (int i = 0; i < n; i++) {
                 newArr[i][0] = arr[i];
                 newArr[i][1] = i;
             }
 
-            Arrays.sort(newArr, (first, second) -> first[0]-second[0]);
+            Arrays.sort(newArr, (first, second) -> first[0] - second[0]);
 
-            int[] res = new int[]{-1,-1};
-            int low = 0, high = newArr.length-1;
+            int[] res = new int[]{-1, -1};
+            int low = 0, high = newArr.length - 1;
             while (low < high) {
                 int sum = newArr[low][0] + newArr[high][0];
                 if (sum == target) {
@@ -430,6 +415,99 @@ public class Problems {
 
     // https://takeuforward.org/plus/dsa/arrays/faqs-medium/3-sum
     static class ThreeSum {
+        // TC: O(N*N*N)
+        // SC: O(1)
+        public List<List<Integer>> brute(int[] nums) {
+            Set<List<Integer>> result = new HashSet<>();
+            Arrays.sort(nums);
+
+            for (int i = 0; i < nums.length; i++) {
+                for (int j = i + 1; j < nums.length; j++) {
+                    for (int k = j + 1; k < nums.length; k++) {
+                        if (nums[i] + nums[j] + nums[k] == 0) {
+                            List<Integer> items = new ArrayList<>(List.of(nums[i], nums[j], nums[k]));
+                            result.add(items);
+                        }
+                    }
+                }
+            }
+
+            return new ArrayList<>(result);
+        }
+
+        // TC: O(N*N)
+        // SC: O(N)
+        public List<List<Integer>> better(int[] nums) {
+            int n = nums.length;
+            Set<List<Integer>> triplets = new HashSet<>();
+            Map<Integer, Integer> mp = new HashMap<>();
+            for (int i=0;i<nums.length;i++) {
+                mp.put(nums[i], i);
+            }
+
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    if(i==j) continue;
+                    int required = -(nums[i] + nums[j]);
+                    int targetKey = mp.getOrDefault(required, -1);
+                    if (targetKey != -1 && targetKey != i && targetKey != j) {
+                        List<Integer> tmp = new ArrayList<>(List.of(nums[i], nums[j], required));
+                        tmp.sort((a, b) -> a - b);
+                        triplets.add(tmp);
+                    }
+                }
+            }
+
+            return new ArrayList<>(triplets);
+        }
+
+        // TC: O(NlogN) + O(N*N)
+        // SC: O(1)
+        public List<List<Integer>> optimal(int[] nums) {
+            // List to store the triplets that sum up to target
+            List<List<Integer>> ans = new ArrayList<>();
+
+            int n = nums.length;
+
+            // Sort the input array nums
+            Arrays.sort(nums);
+
+            // Iterate through the array to find triplets
+            for (int i = 0; i < n; i++) {
+                // Skip duplicates
+                if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+                // Two pointers approach
+                int j = i + 1;
+                int k = n - 1;
+
+                while (j < k) {
+                    int sum = nums[i] + nums[j] + nums[k];
+
+                    if (sum < 0) {
+                        j++;
+                    } else if (sum > 0) {
+                        k--;
+                    } else {
+                        // Found a triplet that sums up to target
+                        List<Integer> temp = new ArrayList<>();
+                        temp.add(nums[i]);
+                        temp.add(nums[j]);
+                        temp.add(nums[k]);
+                        ans.add(temp);
+
+                        // Skip duplicates
+                        j++;
+                        k--;
+                        while (j < k && nums[j] == nums[j - 1]) j++;
+                        while (j < k && nums[k] == nums[k + 1]) k--;
+                    }
+                }
+            }
+
+            return ans;
+
+        }
     }
 }
 
