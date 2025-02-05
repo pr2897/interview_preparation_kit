@@ -4,6 +4,9 @@ import java.util.*;
 
 public class Problems {
     public static void main(String[] args) {
+        int[] arr = new int[] {2, 3, 7, 1, 3, 5};
+        var res = CountInversion.optimal(arr);
+        System.out.println(res);
     }
 
     // https://takeuforward.org/plus/dsa/arrays/logic-building/move-zeros-to-end
@@ -603,6 +606,63 @@ public class Problems {
             }
 
             return ans;
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/arrays/faqs-hard/count-inversions
+    static class CountInversion {
+
+        // TC: O(N * logN)
+        // SC: O(N)
+        public static long optimal(int[] nums) {
+            int[] count = new int[]{0};
+            mergeSort(nums, 0, nums.length-1, count);
+            return count[0];
+        }
+
+        private static void mergeSort(int[] arr, int low, int high, int []count) {
+            if (low >= high) return;
+
+            int mid = low + (high-low)/2;
+            mergeSort(arr, low, mid, count);
+            mergeSort(arr, mid+1, high, count);
+            merge(arr, low, mid, high, count);
+        }
+
+        private static void merge(int[] arr, int low, int mid, int high, int[] count) {
+            int[] tmp = new int[high-low+1];
+            int k = 0;
+
+            int l = low, r = mid+1;
+
+            while (l <= mid && r <= high) {
+                if (arr[l] <= arr[r]) {
+                    tmp[k] = arr[l];
+                    l++;
+                } else { // right is smaller
+                    count[0] += mid - l + 1;
+                    tmp[k] = arr[r];
+                    r++;
+                }
+
+                k++;
+            }
+
+            while (l <= mid) {
+                tmp[k] = arr[l];
+                l++;
+                k++;
+            }
+
+            while (r <= high) {
+                tmp[k] = arr[r];
+                r++;
+                k++;
+            }
+
+            for (int i=0;i<tmp.length;i++) {
+                arr[low+i] = tmp[i];
+            }
         }
     }
 }
