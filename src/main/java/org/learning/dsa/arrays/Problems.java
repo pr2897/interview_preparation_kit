@@ -741,6 +741,47 @@ public class Problems {
             }
         }
     }
+
+    // https://takeuforward.org/plus/dsa/arrays/faqs-hard/maximum-product-subarray-in-an-array
+    static class MaximumProductSubarray {
+
+        // TC: O(N*N)
+        // SC: O(1)
+        public static int brute(int[] nums ) {
+            long maxi = Long.MIN_VALUE;
+
+            for(int i=0;i<nums.length;i++) {
+                long prod = 1l;
+                for(int j=i;j<nums.length;j++) {
+                    prod *= nums[j];
+                    maxi = Math.max(maxi, prod);
+                    if(prod == 0) break;
+                }
+            }
+
+            return (int) maxi;
+        }
+
+        // TC: O(N)
+        // SC: O(1)
+        public static int optimal(int[] nums) {
+            int maxi = Integer.MIN_VALUE;
+            int n = nums.length;
+            int preMax = 1, postMax = 1;
+
+            for (int i=0;i<n;i++) {
+                if (preMax == 0) preMax = 1;
+                if (postMax == 0) postMax = 1;
+
+                preMax *= nums[i];
+                postMax *= nums[n-1-i];
+
+                maxi = Math.max(maxi, Math.max(preMax, postMax));
+            }
+
+            return maxi;
+        }
+    }
 }
 
 
