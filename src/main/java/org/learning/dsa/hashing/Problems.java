@@ -82,4 +82,39 @@ public class Problems {
             return maxLen;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/hashing/faqs/count-subarrays-with-given-sum
+    static class CountSubarrayWithGivenSum {
+
+        // TC: O(N*N)
+        // SC: O(1)
+        public static int brute(int[] nums, int k) {
+            int count = 0;
+
+            for (int i=0;i<nums.length;i++) {
+                int sum = 0;
+                for (int j=i;j<nums.length;j++) {
+                    sum += nums[j];
+
+                    if (sum == k) count++;
+                }
+            }
+            return count;
+        }
+
+        public static int optimal(int[] nums, int k) {
+            int count = 0;
+            Map<Integer, Integer> preSumMap = new HashMap<>(Map.of(0,1));
+            int presum = 0;
+            for (int i=0;i<nums.length;i++) {
+                presum += nums[i];
+                int remove = presum - k;
+                count += preSumMap.getOrDefault(remove, 0);
+
+                preSumMap.compute(presum, (key,val) -> val == null ? 1: val+1);
+            }
+
+            return count;
+        }
+    }
 }
