@@ -4,9 +4,9 @@ import java.util.*;
 
 public class Problems {
     public static void main(String[] args) {
-        int[] arr = new int[] {2, 3, 7, 1, 3, 5};
-        var res = CountInversion.optimal(arr);
-        System.out.println(res);
+        int[] arr = new int[] {6, 4, 1, 2, 7};
+        var resp = ReversePairs.optimal(arr);
+        System.out.println(resp);
     }
 
     // https://takeuforward.org/plus/dsa/arrays/logic-building/move-zeros-to-end
@@ -641,6 +641,82 @@ public class Problems {
                     l++;
                 } else { // right is smaller
                     count[0] += mid - l + 1;
+                    tmp[k] = arr[r];
+                    r++;
+                }
+
+                k++;
+            }
+
+            while (l <= mid) {
+                tmp[k] = arr[l];
+                l++;
+                k++;
+            }
+
+            while (r <= high) {
+                tmp[k] = arr[r];
+                r++;
+                k++;
+            }
+
+            for (int i=0;i<tmp.length;i++) {
+                arr[low+i] = tmp[i];
+            }
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/arrays/faqs-hard/reverse-pairs
+    static class ReversePairs {
+        // TC: O(N^2)
+        // SC: O(1)
+        public static int bruteForce(int[] nums) {
+            int count = 0;
+            for(int i=0;i<nums.length;i++) {
+                for(int j=i+1;j<nums.length;j++) {
+                    if(nums[i] > 2 * nums[j]) {
+                        count++;
+                    }
+                }
+            }
+
+            return count;
+        }
+
+        // TC: O(N*logN)
+        // SC: O(N)
+        public static int optimal(int[] nums) {
+            int[] count = new int[] {0};
+            mergeSort(nums, 0, nums.length-1, count);
+            return count[0];
+        }
+
+        private static void mergeSort(int[] arr, int low, int high, int []count) {
+            if (low >= high) return;
+
+            int mid = low + (high-low)/2;
+            mergeSort(arr, low, mid, count);
+            mergeSort(arr, mid+1, high, count);
+            merge(arr, low, mid, high, count);
+        }
+
+        private static void merge(int[] arr, int low, int mid, int high, int[] count) {
+            int[] tmp = new int[high-low+1];
+            int k = 0;
+
+            int l = low, r = mid+1;
+
+            for (int i=low, right = mid+1; i<=mid;i++) {
+                while (right <= high && arr[i] >2 * arr[right]) right++;
+
+                count[0] += (right - (mid+1));
+            }
+
+            while (l <= mid && r <= high) {
+                if (arr[l] <= arr[r]) {
+                    tmp[k] = arr[l];
+                    l++;
+                } else { // right is smaller
                     tmp[k] = arr[r];
                     r++;
                 }
