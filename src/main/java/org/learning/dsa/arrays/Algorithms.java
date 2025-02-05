@@ -1,5 +1,7 @@
 package org.learning.dsa.arrays;
 
+import org.learning.dsa.utils.ArrayUtils;
+
 public class Algorithms {
     public static void main(String[] args) {
         int[] arr = new int[]{0, 1, 1, 1, 2, 0, 1, 0, 2, 2, 0};

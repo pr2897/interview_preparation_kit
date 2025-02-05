@@ -1,4 +1,4 @@
-package org.learning.dsa.arrays;
+package org.learning.dsa.utils;
 
 public class ArrayUtils {
     // TC: O(1)
