@@ -117,4 +117,43 @@ public class Problems {
             return count;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/hashing/faqs/count-subarrays-with-given-xor-k
+    static class CountSubarrayWithGivenXorK {
+
+        // TC: O(N*N)
+        // SC: O(1)
+        public static int brute(int[] nums, int k) {
+            int cnt = 0;
+
+            for (int i=0;i<nums.length;i++) {
+                int xor = 0;
+                for (int j=i;j<nums.length;j++) {
+                    xor ^= nums[j];
+
+                    if (xor == k) cnt++;
+                }
+            }
+
+            return cnt;
+        }
+
+        // TC: O(N*logN)
+        // SC: O(N)
+        public static int optimal(int[] nums, int k) {
+            int cnt = 0;
+            int xor = 0;
+            Map<Integer, Integer> freMap = new HashMap<>(Map.of(0, 1));
+
+            for (int num : nums) {
+                xor ^= num;
+                int required = xor ^ k;
+
+                cnt += freMap.getOrDefault(required, 0);
+                freMap.compute(xor, (key, val) -> val == null ? 1 : val + 1);
+            }
+
+            return cnt;
+        }
+    }
 }
