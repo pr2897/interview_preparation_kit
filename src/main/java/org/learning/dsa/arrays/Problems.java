@@ -4,9 +4,11 @@ import java.util.*;
 
 public class Problems {
     public static void main(String[] args) {
-        int[] arr = new int[] {6, 4, 1, 2, 7};
-        var resp = ReversePairs.optimal(arr);
-        System.out.println(resp);
+        int[] nums1 = new int[] {0, 2, 7, 8, 0, 0, 0};
+        int[] nums2 = new int[] {-7, -3, -1};
+
+        MergeTwoSortedArray.optimal(nums1,4, nums2, nums2.length);
+        System.out.println(Arrays.toString(nums1));
     }
 
     // https://takeuforward.org/plus/dsa/arrays/logic-building/move-zeros-to-end
@@ -780,6 +782,41 @@ public class Problems {
             }
 
             return maxi;
+        }
+    }
+
+    static class MergeTwoSortedArray {
+
+        // TC: O(M+N)
+        // SC: O(1)
+        public static void optimal(int[] nums1, int m, int[] nums2, int n) {
+            int k = m + n - 1;
+            m--;
+            n--;
+
+            while(m >= 0 && n >= 0) {
+                if(nums1[m] >= nums2[n]) {
+                    nums1[k] = nums1[m];
+                    m--;
+                } else {
+                    nums1[k] = nums2[n];
+                    n--;
+                }
+
+                k--;
+            }
+
+            while(m >= 0) {
+                nums1[k] = nums1[m];
+                m--;
+                k--;
+            }
+
+            while(n >= 0) {
+                nums1[k] = nums2[n];
+                n--;
+                k--;
+            }
         }
     }
 }
