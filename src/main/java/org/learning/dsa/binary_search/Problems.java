@@ -2,10 +2,9 @@ package org.learning.dsa.binary_search;
 
 public class Problems {
     public static void main(String[] args) {
-        int[] nums = new int[] {7, 8, 1, 2, 3, 3, 3, 4, 5, 6};
-        int x = 3;
+        int[] nums = new int[] {4, 5, 6, 7, 0, 1, 2, 3};
 
-        System.out.println(SearchInRotatedSortedArrayDuplicate.optimal(nums, x));
+        System.out.println(MinimumInSortedArray.optimal(nums));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -148,6 +147,30 @@ public class Problems {
             }
 
             return -1;
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/binary-search/logic-building/find-minimum-in-rotated-sorted-array
+    static class MinimumInSortedArray {
+        public static int optimal(int[] nums) {
+            int n = nums.length;
+            int ans = nums[0];
+
+            int low = 0, high = n - 1;
+
+            while (low <= high) {
+                int mid = low + (high - low ) / 2;
+
+                ans = Math.min(ans, nums[mid]);
+                if (nums[low] <= nums[mid]) { // left sorted
+                    ans = Math.min(ans, nums[low]);
+                    low = mid + 1;
+                } else { // right sorted
+                    high = mid - 1;
+                }
+            }
+
+            return ans;
         }
     }
 }
