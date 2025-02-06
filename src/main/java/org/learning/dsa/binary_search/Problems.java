@@ -7,6 +7,8 @@ public class Problems {
         System.out.println(SingleElementInSortedArray.optimal(nums));
 
         System.out.println(SquareRoot.optimal(28));
+
+        System.out.println(NthRoot.optimal(9, 512));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -254,4 +256,30 @@ public class Problems {
             return res;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/binary-search/on-answers/find-nth-root-of-a-number
+    static class NthRoot {
+        public static int optimal(int N, int M) {
+            int l = 1, r = M;
+            while(l <= r) {
+                int mid = (l+r)/2;
+                int calc = func(mid, N,M);
+                if(calc == 1) return mid;
+                else if(calc ==2) r = mid-1;
+                else l = mid+1;
+            }
+            return -1;
+        }
+
+        private static int func(int mid, int n, int m) {
+            long ans = 1;
+            for(int i=1;i<=n;i++) {
+                ans *= mid;
+                if (ans > m) return 2;
+            }
+            if(ans == m) return 1;
+            return 0;
+        }
+    }
+
 }
