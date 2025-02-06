@@ -2,10 +2,10 @@ package org.learning.dsa.binary_search;
 
 public class Problems {
     public static void main(String[] args) {
-        int[] nums = new int[] {4, 5, 6, 7, 0, 1, 2};
-        int x = 0;
+        int[] nums = new int[] {7, 8, 1, 2, 3, 3, 3, 4, 5, 6};
+        int x = 3;
 
-        System.out.println(SearchInRotatedSortedArray.optimal(nums, x));
+        System.out.println(SearchInRotatedSortedArrayDuplicate.optimal(nums, x));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -107,6 +107,41 @@ public class Problems {
                         low = mid + 1;
                     }
                     else {
+                        high = mid - 1;
+                    }
+                }
+            }
+
+            return -1;
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/binary-search/logic-building/search-in-rotated-sorted-array-2
+    static class SearchInRotatedSortedArrayDuplicate {
+        private static int optimal(int[] nums, int k) {
+            int n = nums.length;
+            int low = 0, high = n - 1;
+
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+                if (nums[mid] == k) return mid;
+
+                if (nums[mid] == nums[low] && nums[mid] == nums[high]) {
+                    low += 1;
+                    high -= 1;
+                    continue;
+                }
+
+                if (nums[low] <= nums[mid]) { // left sorted
+                    if (nums[mid] >= k && nums[low] <= k) {
+                        high = mid - 1;
+                    } else {
+                        low = mid + 1;
+                    }
+                } else {  // right sorted
+                    if (nums[mid] <= k && k <= nums[high]) {
+                        low = mid + 1;
+                    } else {
                         high = mid - 1;
                     }
                 }
