@@ -173,4 +173,36 @@ public class Problems {
             return ans;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/binary-search/logic-building/find-out-how-many-times-the-array-is-rotated
+    static class CountNumberOfTimesSortedArrayIsRotated {
+        public static int optimal(int[] nums) {
+            int n = nums.length;
+            int ans = nums[0];
+
+            int low = 0, high = n - 1, index = 0;
+
+            while (low <= high) {
+                int mid = low + (high - low ) / 2;
+
+                if(ans > nums[mid]) {
+                    ans = nums[mid];
+                    index = mid;
+                }
+
+                if (nums[low] <= nums[mid]) { // left sorted
+                    if(nums[low] < ans) {
+                        ans = nums[low];
+                        index = low;
+                    }
+                    low = mid + 1;
+                } else { // right sorted
+                    high = mid - 1;
+                }
+            }
+
+            return index;
+        }
+    }
+
 }
