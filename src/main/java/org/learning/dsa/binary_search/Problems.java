@@ -5,6 +5,8 @@ public class Problems {
         int[] nums = new int[] {1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6};
 
         System.out.println(SingleElementInSortedArray.optimal(nums));
+
+        System.out.println(SquareRoot.optimal(28));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -228,6 +230,28 @@ public class Problems {
             }
 
             return 0;
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/binary-search/on-answers/find-square-root-of-a-number
+    static class SquareRoot {
+        private static long optimal(long n) {
+            if(n <= 0) return 0;
+            long low = 1, high = n/2, res = 1;
+
+            while (low <= high) {
+                long mid = low + (high - low) / 2;
+
+                if (mid * mid == n) return mid;
+                else if (mid*mid < n) {
+                    res = mid;
+                    low = mid + 1;
+                } else {
+                    high = mid - 1;
+                }
+            }
+
+            return res;
         }
     }
 }
