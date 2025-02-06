@@ -2,9 +2,9 @@ package org.learning.dsa.binary_search;
 
 public class Problems {
     public static void main(String[] args) {
-        int[] nums = new int[] {4, 5, 6, 7, 0, 1, 2, 3};
+        int[] nums = new int[] {1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6};
 
-        System.out.println(MinimumInSortedArray.optimal(nums));
+        System.out.println(SingleElementInSortedArray.optimal(nums));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -205,4 +205,29 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/binary-search/logic-building/single-element-in-sorted-array
+    static class SingleElementInSortedArray {
+        public static int optimal(int[] nums) {
+            int n = nums.length, low = 0, high = n - 1;
+
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+
+                boolean isUnique = true;
+                if (mid > 0) isUnique &= nums[mid] != nums[mid-1];
+                if (mid < n -1 ) isUnique &= nums[mid] != nums[mid+1];
+                if (isUnique) return nums[mid];
+
+                if (mid % 2 == 0) {
+                    if (mid > 0 && nums[mid] == nums[mid+1]) low = mid + 1;
+                    else high = mid - 1;
+                } else {
+                    if (mid < n - 1 && nums[mid] == nums[mid-1]) low = mid + 1;
+                    else high = mid - 1;
+                }
+            }
+
+            return 0;
+        }
+    }
 }
