@@ -9,6 +9,8 @@ public class Problems {
         System.out.println(SquareRoot.optimal(28));
 
         System.out.println(NthRoot.optimal(9, 512));
+
+        System.out.println(SmallestDivisor.optimal(new int[]{1, 2, 3, 4, 5}, 8));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -279,6 +281,37 @@ public class Problems {
             }
             if(ans == m) return 1;
             return 0;
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/binary-search/on-answers/find-the-smallest-divisor
+    static class SmallestDivisor {
+        public static int optimal(int[] nums, int limit) {
+            int low = 1, high = nums[0];
+            for (int c: nums) {
+                if (c > high) high = c;
+            }
+
+            int res = high;
+            while (low <= high) {
+                int mid = low + (high - low) / 2;
+                if (cost(nums, mid) <= limit) {
+                    res = mid;
+                    high = mid - 1;
+                } else {
+                    low = mid + 1;
+                }
+            }
+
+            return res;
+        }
+
+        private static int cost(int[] nums, int x) {
+            int sum = 0;
+            for (int c: nums) {
+                sum += (int) Math.ceil((double) c / (double) x);
+            }
+            return sum;
         }
     }
 
