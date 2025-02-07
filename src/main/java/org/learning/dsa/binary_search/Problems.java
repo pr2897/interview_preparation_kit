@@ -11,6 +11,10 @@ public class Problems {
         System.out.println(NthRoot.optimal(9, 512));
 
         System.out.println(SmallestDivisor.optimal(new int[]{1, 2, 3, 4, 5}, 8));
+
+        int[] arr = new int[] {7, 7, 7, 7, 13, 11, 12, 7};
+        System.out.println(MinimumDayToMakeMBouquets.brute(arr.length, arr, 3, 2));
+        System.out.println(MinimumDayToMakeMBouquets.optimal(arr.length, arr, 3, 2));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -315,4 +319,77 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/binary-search/on-answers/minimum-days-to-make-m-bouquets
+    static class MinimumDayToMakeMBouquets {
+
+        // TC: O(N*N
+        // SC: O(1)
+        public static int brute(int n, int[] nums, int k, int m) {
+            int max = nums[0];
+            int min = nums[0];
+
+            for (int c: nums) {
+                if (c > max) max = c;
+                if (c < min) min = c;
+            }
+
+            for (int day=min; day <= max; day++) {
+                int count = 0;
+                int bouquets = 0;
+
+                for (int c: nums) {
+                    if (day >= c) count++;
+                    else {
+                        bouquets += count / k;
+                        count = 0;
+                    }
+                }
+
+                bouquets += count / k;
+                if (bouquets >= m)
+                    return day;
+            }
+
+
+            return -1;
+        }
+
+        // TC: O(N* logN)
+        // SC: O(1)
+        public static int optimal(int n, int[] nums, int k, int m) {
+            int high = nums[0];
+            int low = nums[0];
+
+            for (int c: nums) {
+                if (c > high) high = c;
+                if (c < low) low = c;
+            }
+
+            int ans = -1;
+
+            while (low <= high) {
+                int day = low + (high - low) / 2;
+                int count = 0;
+                int bouquets = 0;
+
+                for (int c: nums) {
+                    if (day >= c) count++;
+                    else {
+                        bouquets += count / k;
+                        count = 0;
+                    }
+                }
+                bouquets += count / k;
+
+                if (bouquets >= m) {
+                    ans = day;
+                    high = day - 1;
+                } else {
+                    low = day + 1;
+                }
+            }
+
+            return ans;
+        }
+    }
 }
