@@ -20,6 +20,9 @@ public class Problems {
         System.out.println(MinimumDayToMakeMBouquets.optimal(arr.length, arr, 3, 2));
 
         System.out.println(AggressiveCows.brute(new int[]{4, 2, 1, 3, 6}, 2));
+
+        System.out.println(BookAllocation.brute(new int[]{12, 34, 67, 90}, 2));
+        System.out.println(BookAllocation.optimal(new int[]{12, 34, 67, 90}, 2));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -398,6 +401,7 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/binary-search/faqs/aggressive-cows
     static class AggressiveCows {
 
         // TC :  O(N*logN)
@@ -455,6 +459,74 @@ public class Problems {
             }
 
             return false;
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/binary-search/faqs/book-allocation-problem
+    static class BookAllocation {
+
+        // TC: O(N * (sum - max))
+        // SC: O(1)
+        public static int brute(int[] nums, int m) {
+            int n = nums.length;
+            if (n < m) return -1;
+
+            int low = nums[0], high = 0;
+            for (int c: nums) {
+                low = Math.max(low, c);
+                high += c;
+            }
+
+            // Linear search for minimum maximum pages
+            for (int page = low ; page <= high ; page++) {
+                if (countStudents(nums, page) == m) {
+                    return page;
+                }
+            }
+
+            return low;
+        }
+
+        // TC: O(N) * O(log (sum - max))
+        // SC: O(1)
+        public static int optimal(int[] nums, int m) {
+            int n = nums.length;
+            if (n < m) return -1;
+
+            int low = nums[0], high = 0;
+            for (int c: nums) {
+                low = Math.max(low, c);
+                high += c;
+            }
+
+            while (low <= high) {
+                int page = low + (high - low) / 2;
+
+                int studentAllocated = countStudents(nums, page);
+                if (studentAllocated <= m) high = page - 1;
+                else low = page + 1;
+            }
+
+            return low;
+        }
+
+        private static int countStudents(int[] nums, int pageLimit) {
+            int n = nums.length;
+
+            int students = 1;
+            int pagesStudent = 0;
+
+            for (int pageInCurrentBook: nums) {
+                if (pagesStudent + pageInCurrentBook <= pageLimit) {
+                    pagesStudent += pageInCurrentBook;
+                }
+                else {
+                    students++;
+                    pagesStudent = pageInCurrentBook;
+                }
+            }
+
+            return students;
         }
     }
 }
