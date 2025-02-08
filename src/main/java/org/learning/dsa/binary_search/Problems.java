@@ -1,5 +1,8 @@
 package org.learning.dsa.binary_search;
 
+import java.util.Arrays;
+import java.util.Collections;
+
 public class Problems {
     public static void main(String[] args) {
         int[] nums = new int[] {1, 1, 2, 2, 3, 3, 4, 5, 5, 6, 6};
@@ -15,6 +18,8 @@ public class Problems {
         int[] arr = new int[] {7, 7, 7, 7, 13, 11, 12, 7};
         System.out.println(MinimumDayToMakeMBouquets.brute(arr.length, arr, 3, 2));
         System.out.println(MinimumDayToMakeMBouquets.optimal(arr.length, arr, 3, 2));
+
+        System.out.println(AggressiveCows.brute(new int[]{4, 2, 1, 3, 6}, 2));
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -390,6 +395,66 @@ public class Problems {
             }
 
             return ans;
+        }
+    }
+
+    static class AggressiveCows {
+
+        // TC :  O(N*logN)
+        // SC: O(1)
+        public static int brute(int[] nums, int k) {
+            Arrays.sort(nums);
+            int maxi = nums[0], mini = nums[0];
+            for (int c: nums) {
+                if (c > maxi) maxi = c;
+                if (c < mini) mini = c;
+            }
+
+
+
+            int dist = 1;
+            for (; dist <= maxi-mini ; dist++) {
+                if(isCowPlaced(nums, dist, k)) continue;
+                else break;
+            }
+
+            return dist - 1;
+        }
+
+        // TC: O(N*logN)
+        // SC: O(1)
+        public static int optimal(int[] nums, int k) {
+            Arrays.sort(nums);
+            int maxi = nums[0], mini = nums[0];
+            for (int c: nums) {
+                maxi = Math.max(maxi, c);
+                mini = Math.min(mini, c);
+            }
+
+            int low = 0, high = maxi - mini;
+
+            while (low <= high) {
+                int mid = low + (high - low ) / 2;
+                if (isCowPlaced(nums, mid, k)) low = mid + 1;
+                else high = mid - 1;
+            }
+
+            return high;
+        }
+
+        private static boolean isCowPlaced(int[] nums, int dist, int k) {
+            int cnt = 0;
+            int lastPlaced = -1;
+            for (int c: nums) {
+                if (lastPlaced == -1 || c - lastPlaced >= dist){
+                    cnt++;
+                    lastPlaced = c;
+                }
+
+                if (cnt == k) return true;
+            }
+
+            return false;
         }
     }
 }
