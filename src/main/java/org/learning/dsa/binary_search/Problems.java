@@ -2,6 +2,7 @@ package org.learning.dsa.binary_search;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class Problems {
     public static void main(String[] args) {
@@ -23,6 +24,10 @@ public class Problems {
 
         System.out.println(BookAllocation.brute(new int[]{12, 34, 67, 90}, 2));
         System.out.println(BookAllocation.optimal(new int[]{12, 34, 67, 90}, 2));
+
+        List<int[]> inputs = List.of(new int[]{1, 2, 1, 3, 5, 6, 4}, new int[] {1, 2, 3, 4, 5, 6, 7, 8, 5, 1});
+        inputs.forEach(input -> System.out.println(PeakElement.brute(input)));
+
     }
 
     // https://takeuforward.org/plus/dsa/binary-search/logic-building/floor-and-ceil-in-sorted-array
@@ -528,5 +533,33 @@ public class Problems {
 
             return students;
         }
+    }
+
+    //
+    static class PeakElement {
+        // TC: O(N)
+        // SC: O(1)
+        public static int brute(int[] arr) {
+            int n = arr.length;
+
+            for (int i=0;i<n;i++) {
+                if((i == 0 || arr[i] > arr[i-1]) && (i == n-1 || arr[i] > arr[i+1])) {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        // TC: O(N)
+        // SC: O(1)
+        public static int optimal(int[] arr) {
+            return 1;
+        }
+    }
+
+    //
+    static class MedianOfSortedArray {
+        
     }
 }
