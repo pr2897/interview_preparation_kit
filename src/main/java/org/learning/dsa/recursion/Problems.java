@@ -11,6 +11,9 @@ public class Problems {
         System.out.println(GenerateParenthesis.generateParenthesis(1));
 
         System.out.println(PowerSet.powerSet(new int[]{1,2,3}));
+
+        System.out.println(ExistsSubsequenceWithSumK.checkSubsequenceSum(new int[]{1, 2, 3, 4, 5}, 8));
+        System.out.println(ExistsSubsequenceWithSumK.checkSubsequenceSum(new int[]{4, 3, 9, 2}, 10));
     }
 
     static class Pow {
@@ -85,6 +88,34 @@ public class Problems {
             tmp.add(nums[idx]);
             helper(nums, idx+1, n, tmp, ans);
             tmp.removeLast();
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/recursion/subsequence-pattern-problems/check-if-there-exists-a-subsequence-with-sum-k
+    static class ExistsSubsequenceWithSumK {
+        public static boolean checkSubsequenceSum(int[] nums, int k) {
+            return helper(0, nums.length, k, nums);
+        }
+
+        public static boolean helper(int idx, int n, int k, int[] nums) {
+            if (k == 0) return true;
+            if (idx == n) return false;
+
+            return helper(idx+1, n, k - nums[idx], nums) || helper(idx+1, n, k, nums);
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/recursion/subsequence-pattern-problems/count-all-subsequences-with-sum-k
+    static class CountSubsequenceWithSumK {
+        public static int checkSubsequenceSum(int[] nums, int k) {
+            return helper(0, nums.length, k, nums);
+        }
+
+        public static int helper(int idx, int n, int k, int[] nums) {
+            if (k == 0) return 1;
+            if (idx == n) return 0;
+
+            return helper(idx+1, n, k - nums[idx], nums) + helper(idx+1, n, k, nums);
         }
     }
 }
