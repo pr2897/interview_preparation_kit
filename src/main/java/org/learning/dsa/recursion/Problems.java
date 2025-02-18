@@ -22,6 +22,9 @@ public class Problems {
         System.out.println(CombinationSum.combinationSum(new int[]{2, 3, 5, 4}, 7));
 
         System.out.println(CombinationSum2.combinationSum2(new int[] {2, 1, 2, 7, 6, 1, 5}, 8));
+
+        System.out.println(CombinationSum3.combinationSum3(3,7));
+        System.out.println(CombinationSum3.combinationSum3(3,9));
     }
 
     static class Pow {
@@ -207,7 +210,7 @@ public class Problems {
         }
     }
 
-    //
+    // https://takeuforward.org/plus/dsa/recursion/faqs-medium/subsets-ii
     static class Subset2 {
         public static List<List<Integer>> subsetsWithDup(int[] nums) {
             Arrays.sort(nums);
@@ -229,4 +232,32 @@ public class Problems {
             helper(idx+1, n, tmp, ans, nums);
         }
     }
+
+    // https://takeuforward.org/plus/dsa/recursion/faqs-medium/combination-sum-iii
+    static class CombinationSum3 {
+        public static List<List<Integer>> combinationSum3(int k, int n) {
+            Set<List<Integer>> answer = new HashSet<>();
+            helper(0, k, n, new ArrayList<>(), answer,  new int[]{1,2,3,4,5,6,7,8,9});
+            return new ArrayList<>(answer);
+        }
+
+        private static void helper(int idx, int k, int n, List<Integer> tmp, Set<List<Integer>> answer, int[] ints) {
+            if (idx == ints.length) {
+                if (n == 0 && tmp.size() == k) {
+                    answer.add(new ArrayList<>(tmp));
+                }
+
+                return;
+            }
+
+            // pick
+            tmp.add(ints[idx]);
+            helper(idx+1, k, n - ints[idx], tmp, answer, ints);
+            tmp.removeLast();
+
+            // non pick
+            helper(idx+1, k, n, tmp, answer, ints);
+        }
+    }
+
 }
