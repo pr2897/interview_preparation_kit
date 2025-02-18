@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -25,6 +26,8 @@ public class Problems {
 
         System.out.println(CombinationSum3.combinationSum3(3,7));
         System.out.println(CombinationSum3.combinationSum3(3,9));
+
+        System.out.println(LetterCombination.letterCombinations("34"));
     }
 
     static class Pow {
@@ -260,4 +263,41 @@ public class Problems {
         }
     }
 
+    // https://takeuforward.org/plus/dsa/recursion/hard/letter-combinations-of-a-phone-number
+    static class LetterCombination {
+        public static List<String> letterCombinations(String digits) {
+            Map<Character, List<Character>> mp = Map.of(
+                    '2', List.of('a','b','c'),
+                    '3', List.of('d','e','f'),
+                    '4', List.of('g','h','i'),
+                    '5', List.of('j','k','l'),
+                    '6', List.of('m','n','o'),
+                    '7', List.of('p','q','r','s'),
+                    '8', List.of('t','u','v'),
+                    '9', List.of('w','x','y','z')
+            );
+
+            Set<String> answers = new TreeSet<>();
+
+
+            for (int i=0;i<digits.length();i++) {
+                helper("", digits, mp, answers);
+            }
+
+            return new ArrayList<>(answers);
+        }
+
+        private static void helper(String tmp, String digits, Map<Character, List<Character>> mp, Set<String> answers) {
+            if (digits.isEmpty()) {
+                answers.add(tmp);
+                return;
+            }
+
+            char digit = digits.charAt(0);
+            for (char ch: mp.get(digit)) {
+                helper(tmp+ch, digits.substring(1), mp, answers);
+            }
+        }
+
+    }
 }
