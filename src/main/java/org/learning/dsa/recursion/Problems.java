@@ -29,6 +29,8 @@ public class Problems {
 
         System.out.println(LetterCombination.letterCombinations("34"));
         System.out.println(LetterCombination.cleanerImpl("34"));
+
+        System.out.println(PalindromePartioning.partition("aabaa"));
     }
 
     static class Pow {
@@ -319,6 +321,42 @@ public class Problems {
             for (char ch : mp.get(digit)) {
                 helper(tmp + ch, digits.substring(1), mp, answers);
             }
+        }
+    }
+
+    //
+    static class PalindromePartioning {
+        public static List<List<String>> partition(String s) {
+            List<List<String>> ans = new ArrayList<>();
+            helper(0, new ArrayList<>(), s, ans);
+            return ans;
+        }
+
+        private static void helper(int idx, List<String> list, String s, List<List<String>> ans) {
+            if (idx == s.length()) {
+                ans.add(new ArrayList<>(list));
+                return;
+            }
+
+            for (int j = idx; j <= s.length() - 1; j++) {
+                if (isPalin(s, idx, j)) {
+                    String substr = s.substring(idx, j+1);
+                    list.add(substr);
+                    helper(j+1, list, s, ans);
+                    list.removeLast();
+                }
+            }
+        }
+
+        private static boolean isPalin(String s, int left, int right) {
+            while (left <= right) {
+                if (s.charAt(left) == s.charAt(right)) {
+                    left++;
+                    right--;
+                } else return false;
+            }
+
+            return true;
         }
     }
 }
