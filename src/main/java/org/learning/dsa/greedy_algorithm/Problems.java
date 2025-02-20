@@ -80,4 +80,20 @@ public class Problems {
             return true;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/greedy-algorithms/scheduling-and-interval-problems/shortest-job-first
+    static class ShortestJobFirst {
+        public long solve(int[] bt) {
+            int n = bt.length;
+            long wt = 0;
+            Arrays.sort(bt);
+
+            for (int i=0;i<n;i++) {
+                long wp = n-1-i;
+                wt += wp*bt[i];
+            }
+
+            return wt / n;
+        }
+    }
 }
