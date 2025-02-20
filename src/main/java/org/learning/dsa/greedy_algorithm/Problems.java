@@ -66,4 +66,18 @@ public class Problems {
             return true;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/greedy-algorithms/easy/jump-game---i
+    static class JumpGame1 {
+        public boolean canJump(int[] nums) {
+            int maxi = 0;
+            for (int i=0;i<nums.length;i++) {
+                if (i > maxi) return false;
+
+                maxi = Math.max(maxi, i+nums[i]);
+            }
+
+            return true;
+        }
+    }
 }
