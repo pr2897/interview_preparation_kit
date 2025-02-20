@@ -400,7 +400,7 @@ public class Problems {
     }
 
     // https://takeuforward.org/plus/dsa/recursion/faqs-hard/n-queen
-    class NQueens {
+    static class NQueens {
         public List<List<String>> solveNQueens(int n) {
             List<List<String>> ans = new ArrayList<>();
 
@@ -453,4 +453,32 @@ public class Problems {
             return true;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/recursion/faqs-hard/rat-in-a-maze
+    static class RatInMaze {
+        public List<String> findPath(int[][] grid) {
+            List<String> ans = new ArrayList<>();
+            helper(0, 0, grid, "", ans);
+            return ans;
+        }
+
+        private static void helper(int i, int j, int[][] grid, String temp, List<String> ans) {
+            int n = grid.length;
+            if (i == n - 1 && j == n - 1) {
+                if (grid[i][j] == 1) ans.add(temp);
+                return;
+            }
+
+            if (i < 0 || j < 0 || i >= n || j >= n) return;
+            if (grid[i][j] == 0) return;
+
+            grid[i][j] = 0;
+            helper(i - 1, j, grid, temp + "U", ans);
+            helper(i + 1, j, grid, temp + "D", ans);
+            helper(i, j - 1, grid, temp + "L", ans);
+            helper(i, j + 1, grid, temp + "R", ans);
+            grid[i][j] = 1;
+        }
+    }
+
 }
