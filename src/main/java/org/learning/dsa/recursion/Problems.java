@@ -2,6 +2,7 @@ package org.learning.dsa.recursion;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -395,6 +396,61 @@ public class Problems {
             board[i][j] = tmp;
 
             return ans;
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/recursion/faqs-hard/n-queen
+    class NQueens {
+        public List<List<String>> solveNQueens(int n) {
+            List<List<String>> ans = new ArrayList<>();
+
+            List<String> board = new ArrayList<>();
+            String row = "";
+            for (int i = 0; i < n; i++) row += '.';
+            for (int i = 0; i < n; i++) board.add(row);
+
+            helper(0, n, board, ans);
+
+            return ans;
+        }
+
+        private void helper(int row, int n, List<String> board, List<List<String>> ans) {
+            if (row == n) {
+                ans.add(new ArrayList<>(board));
+                return;
+            }
+
+            for (int col = 0; col < n; col++) {
+                if (isPossibleToPlace(row, col, board)) {
+                    char[] charArray = board.get(row).toCharArray();
+                    charArray[col] = 'Q';
+                    board.set(row, new String(charArray));
+
+                    helper(row + 1, n, board, ans);
+
+                    charArray[col] = '.';
+                    board.set(row, new String(charArray));
+                }
+            }
+        }
+
+        private boolean isPossibleToPlace(int row, int col, List<String> board) {
+            // top
+            for (int i = 0; i < row; i++) {
+                if (board.get(i).charAt(col) == 'Q') return false;
+            }
+
+            // top-right
+            for (int i = row - 1, j = col + 1; i >= 0 && j < board.get(0).length(); i--, j++) {
+                if (board.get(i).charAt(j) == 'Q') return false;
+            }
+
+            // top left
+            for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
+                if (board.get(i).charAt(j) == 'Q') return false;
+            }
+
+            return true;
         }
     }
 }
