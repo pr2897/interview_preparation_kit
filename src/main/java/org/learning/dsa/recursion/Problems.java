@@ -359,4 +359,42 @@ public class Problems {
             return true;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/recursion/faqs-hard/word-search
+    static class WordSearch {
+        public static boolean exist(char[][] board, String word) {
+            for (int i=0;i<board.length;i++) {
+                for (int j=0;j<board[0].length;j++) {
+                    if (board[i][j] == word.charAt(0)) {
+                        if (helper(i,j,0,board,word)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static boolean helper(int i, int j, int k, char[][] board, String word) {
+            if (k == word.length()) return true;
+
+            int m = board.length;
+            int n = board[0].length;
+
+            if (i < 0 || j < 0 || i >= m || j >= n || word.charAt(k) != board[i][j]) return false;
+
+            char tmp = board[i][j];
+            board[i][j] = ' ';
+
+            boolean ans = helper(i-1, j, k+1, board, word) ||
+                    helper(i+1, j, k+1, board, word) ||
+                    helper(i, j-1, k+1, board, word) ||
+                    helper(i, j+1, k+1, board, word);
+
+            board[i][j] = tmp;
+
+            return ans;
+        }
+    }
 }
