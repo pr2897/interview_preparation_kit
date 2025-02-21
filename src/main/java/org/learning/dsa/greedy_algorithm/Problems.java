@@ -125,4 +125,29 @@ public class Problems {
             return new int[] {cnt, totalProfit};
         }
     }
+
+    // https://takeuforward.org/plus/dsa/greedy-algorithms/scheduling-and-interval-problems/n-meetings-in-one-room
+    static class NMeetingInOneRoom {
+        public static int maxMeetings(int[] start, int[] end) {
+            int n = start.length;
+            int[][] meetings = new int[start.length][3];
+            for(int i=0;i<n;i++) {
+                meetings[i][0] = start[i];
+                meetings[i][1] = end[i];
+                meetings[i][2] = i;
+            }
+
+            Arrays.sort(meetings, (a,b) -> a[1]-b[1]);
+            int cnt = 1, free = meetings[0][1];
+
+            for(int i=1;i<n;i++) {
+                if(meetings[i][0] > free) {
+                    cnt++;
+                    free = meetings[i][1];
+                }
+            }
+
+            return cnt;
+        }
+    }
 }
