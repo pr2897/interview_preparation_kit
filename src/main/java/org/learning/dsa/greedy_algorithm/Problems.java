@@ -150,4 +150,21 @@ public class Problems {
             return cnt;
         }
     }
+
+    // https://takeuforward.org/plus/dsa/greedy-algorithms/scheduling-and-interval-problems/non-overlapping-intervals
+    static class NonOverlappingProblem {
+        public static int MaximumNonOverlappingIntervals(int[][] Intervals) {
+            Arrays.sort(Intervals, (a,b) -> a[1]-b[1]);
+            int cnt = 1, free = Intervals[0][1];
+
+            for (int i=1;i<Intervals.length;i++) {
+                if (Intervals[i][0] >= free) {
+                    cnt++;
+                    free = Intervals[i][1];
+                }
+            }
+
+            return Intervals.length - cnt;
+        }
+    }
 }
