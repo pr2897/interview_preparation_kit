@@ -18,6 +18,9 @@ public class Problems {
         var resp = InsertInterval.insertNewInterval(intervals, newInterval);
         System.out.println(Arrays.deepToString(resp));
 
+        int[] ratings = new int[] {0, 2, 4, 3, 2, 1, 1, 3, 5, 6, 4, 0, 0};
+        System.out.println(Candy.candyBrute(ratings));
+
 
     }
 
@@ -267,6 +270,71 @@ public class Problems {
             }
 
             return maxCnt;
+        }
+    }
+
+    // https://takeuforward.org/plus/dsa/greedy-algorithms/hard/candy
+    static class Candy {
+        // TC: O(2N)
+        // SC: O(2N)
+        public static int candyBrute(int[] ratings) {
+            int n = ratings.length;
+            int[] left = new int[ratings.length];
+            int[] right = new int[ratings.length];
+
+            right[n-1] = left[0] = 1;
+
+            // left requirement
+            for (int i=1;i<n;i++) {
+                if (ratings[i] > ratings[i-1]) left[i] = left[i-1]+1;
+                else left[i] = 1;
+            }
+
+            // right requirement
+            for (int i=n-2;i>=0;i--) {
+                if (ratings[i] > ratings[i+1]) right[i] = right[i+1] + 1;
+                else right[i] = 1;
+            }
+
+            int total = 0;
+            for (int i=0;i<n;i++) {
+                total += Math.max(left[i], right[i]);
+            }
+
+            return total;
+        }
+
+        // https://takeuforward.org/plus/dsa/greedy-algorithms/hard/candy?tab=editorial
+        public static int candyOptimal(int[] ratings) {
+            int sum = 1, i = 1, n = ratings.length;
+
+            while (i < n) {
+                if (ratings[i] == ratings[i - 1]) {
+                    sum += 1;
+                    i++;
+                    continue;
+                }
+
+                int peek = 1;
+                while (i < n && ratings[i] > ratings[i - 1]) {
+                    peek += 1;
+                    sum += peek;
+                    i++;
+                }
+
+                int down = 1;
+                while (i < n && ratings[i] < ratings[i - 1]) {
+                    sum += down;
+                    down += 1;
+                    i++;
+                }
+
+                if (down > peek) {
+                    sum += (down - peek);
+                }
+            }
+
+            return sum;
         }
     }
 }
