@@ -17,6 +17,8 @@ public class Problems {
         int[] newInterval = new int[] {4,8};
         var resp = InsertInterval.insertNewInterval(intervals, newInterval);
         System.out.println(Arrays.deepToString(resp));
+
+
     }
 
     // https://takeuforward.org/plus/dsa/greedy-algorithms/easy/assign-cookies
@@ -204,6 +206,67 @@ public class Problems {
             i=0;
             for (int[] inverval: intervals) result[i++] = inverval;
             return result;
+        }
+    }
+
+    static class MinimumNumberOfPlatform {
+
+        // brute
+        public int findPlatform(int[] Arrival, int[] Departure) {
+            int n = Arrival.length;
+            int[][] trains = new int[Arrival.length][2];
+
+            for (int i=0;i<n;i++) {
+                trains[i][0] = Arrival[i];
+                trains[i][1] = Departure[i];
+            }
+
+            Arrays.sort(trains, (a,b) -> a[0]-b[0]);
+
+            List<int[]> platforms = new ArrayList<>();
+            int cnt = 0;
+
+            for (int[] train: trains) {
+                int idx = -1;
+                for (int i=0;i<platforms.size();i++) {
+                    if (platforms.get(i)[1] < train[0]) {
+                        idx = i;
+                        break;
+                    }
+                }
+
+                if (idx == -1) {
+                    platforms.add(train);
+                } else {
+                    platforms.set(idx, train);
+                }
+
+                cnt = Math.max(cnt, platforms.size());
+            }
+
+            return cnt;
+        }
+
+        // optimal
+        public int findPlatformOptimal(int[] Arrival, int[] Departure) {
+            Arrays.sort(Arrival);
+            Arrays.sort(Departure);
+
+            int i=0, j= 0, cnt = 0, maxCnt = 0, n = Arrival.length;
+
+            while (i< n) {
+                if (Arrival[i] <= Departure[j]) {
+                    cnt += 1;
+                    i += 1;
+                } else {
+                    cnt -= 1;
+                    j += 1;
+                }
+
+                maxCnt = Math.max(maxCnt, cnt);
+            }
+
+            return maxCnt;
         }
     }
 }
