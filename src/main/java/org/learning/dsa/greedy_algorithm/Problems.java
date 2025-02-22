@@ -1,6 +1,8 @@
 package org.learning.dsa.greedy_algorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Problems {
 
@@ -10,6 +12,11 @@ public class Problems {
 
         int[][] Jobs = new int[][]{{1,4,20}, {2,1,10}, {3,1,40}, {4,1,30}};
         System.out.println(Arrays.toString(JobSequencingProblem.JobScheduling(Jobs)));
+
+        int[][] intervals = new int[][] {{1,2}, {3,5}, {6,7}, {8,10}};
+        int[] newInterval = new int[] {4,8};
+        var resp = InsertInterval.insertNewInterval(intervals, newInterval);
+        System.out.println(Arrays.deepToString(resp));
     }
 
     // https://takeuforward.org/plus/dsa/greedy-algorithms/easy/assign-cookies
@@ -165,6 +172,38 @@ public class Problems {
             }
 
             return Intervals.length - cnt;
+        }
+    }
+
+    static class InsertInterval {
+        public static int[][] insertNewInterval(int[][] Intervals, int[] newInterval) {
+            List<int[]> intervals = new ArrayList<>(Arrays.stream(Intervals).toList());
+            intervals.add(newInterval);
+            intervals.sort((a,b) -> a[0]-b[0]);
+            intervals.forEach(intv -> System.out.printf("[%d, %d], ", intv[0], intv[1]));
+            System.out.println();
+
+            int i=0;
+            while (i < intervals.size() - 1 ) {
+                int[] current = intervals.get(i);
+                int[] next = intervals.get(i+1);
+                if (current[1] >= next[0]) {
+                    int min = Math.min(current[0], next[0]);
+                    int max = Math.max(current[1], next[1]);
+
+                    intervals.get(i)[0] = min;
+                    intervals.get(i)[1] = max;
+
+                    intervals.remove(i+1);
+                } else {
+                    i++;
+                }
+            }
+
+            int[][] result = new int[intervals.size()][2];
+            i=0;
+            for (int[] inverval: intervals) result[i++] = inverval;
+            return result;
         }
     }
 }
